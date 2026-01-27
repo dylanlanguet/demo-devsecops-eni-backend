@@ -19,12 +19,9 @@ jobs:
         with:
           python-version: '3.10'
 
+      # --- INSTALLATION ROBUSTE DE TRIVY ---
       - name: Install Trivy
         run: |
-          sudo apt-get install wget gnupg lsb-release -y
-          wget -qO - https://aquasecurity.github.io/trivy-repo/dab/public.key | gpg --dearmor | sudo tee /usr/share/keyrings/trivy.gpg > /dev/null
-          echo "deb [signed-by=/usr/share/keyrings/trivy.gpg] https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main" | sudo tee -a /etc/apt/sources.list.d/trivy.list
-          sudo apt-get update
-          sudo apt-get install trivy -y
+          curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin v0.49.1
 
       - uses: pre-commit/action@v3.0.1
