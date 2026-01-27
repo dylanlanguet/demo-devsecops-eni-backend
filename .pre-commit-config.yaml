@@ -1,21 +1,18 @@
-# See https://pre-commit.com for more information
-# See https://pre-commit.com/hooks.html for more hooks
+# Configuration optimisée par ton Senior Dev
 repos:
 -   repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v3.2.0
+    rev: v4.5.0
     hooks:
     -   id: trailing-whitespace
     -   id: end-of-file-fixer
     -   id: check-yaml
     -   id: check-added-large-files
 
--   repo: https://github.com/aquasecurity/trivy
-    rev: v0.49.1
+-   repo: local
     hooks:
-      - id: trivy-fs
-        args:
-          - --exit-code
-          - "1"  # Bloque le commit si une faille est trouvée
-          - --severity
-          - HIGH,CRITICAL
-          - .
+      - id: trivy-scan
+        name: Trivy Security Scan
+        # Cette ligne appelle le Trivy que tu as installé sur ta machine
+        entry: trivy fs --exit-code 1 --severity HIGH,CRITICAL .
+        language: system
+        pass_filenames: false
