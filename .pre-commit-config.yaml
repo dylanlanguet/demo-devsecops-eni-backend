@@ -1,4 +1,3 @@
-# Configuration optimisée par ton Senior Dev
 repos:
 -   repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v6.0.0
@@ -12,7 +11,13 @@ repos:
     hooks:
       - id: trivy-scan
         name: Trivy Security Scan
-        # Cette ligne appelle le Trivy que tu as installé sur ta machine
         entry: trivy fs --exit-code 1 --severity HIGH,CRITICAL .
         language: system
         pass_filenames: false
+
+- repo: https://github.com/compilerla/conventional-pre-commit
+  rev: v3.1.0
+  hooks:
+    - id: conventional-pre-commit
+      stages: [commit-msg]
+      args: [feat, fix, chore, docs, style, refactor, perf, test]
