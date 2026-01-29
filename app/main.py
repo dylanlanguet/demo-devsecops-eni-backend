@@ -13,6 +13,8 @@ from .schemas import TaskCreate, TaskUpdate, TaskOut
 
 API_KEY = "devsecops-demo-secret-<a_remplacer>"
 
+exeptionTaskNotFound = "Task not found"
+
 app = FastAPI(title="Task Manager API", version="1.0.0")
 
 # Allow local frontend (file:// or http://localhost) during training
@@ -72,7 +74,7 @@ def search_tasks(q: str = Query(""), db: Session = Depends(get_db)):
 def get_task(task_id: int, db: Session = Depends(get_db)):
     task = db.get(Task, task_id)
     if not task:
-        raise HTTPException(status_code=404, detail="Task not found")
+        raise HTTPException(status_code=404, detail=exeptionTaskNotFound)
     return task
 
 
@@ -80,7 +82,7 @@ def get_task(task_id: int, db: Session = Depends(get_db)):
 def update_task(task_id: int, payload: TaskUpdate, db: Session = Depends(get_db)):
     task = db.get(Task, task_id)
     if not task:
-        raise HTTPException(status_code=404, detail="Task not found")
+        raise HTTPException(status_code=404, detail=exeptionTaskNotFound)
 
     if payload.title is not None:
         task.title = payload.title.strip()
@@ -100,7 +102,7 @@ def update_task(task_id: int, payload: TaskUpdate, db: Session = Depends(get_db)
 def delete_task(task_id: int, db: Session = Depends(get_db)):
     task = db.get(Task, task_id)
     if not task:
-        raise HTTPException(status_code=404, detail="Task not found")
+        raise HTTPException(status_code=404, detail=exeptionTaskNotFound)
     db.delete(task)
     db.commit()
     return None
